@@ -20,14 +20,15 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          yes | sdkmanager --sdk_root="$ANDROID_HOME" --licenses || true
+          sdkmanager --sdk_root="$ANDROID_HOME" --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
-
-      - name: Install Android SDK
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Extract project
         run: unzip -q ERSEL_LI_GitHub_Build_download.zip -d source
